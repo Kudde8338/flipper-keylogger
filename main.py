@@ -1,11 +1,12 @@
 import time
 from pynput.keyboard import Key, Listener
 from config import special_chars, special_keys, pass_keys
+from pathlib import Path
 
 last_time = time.monotonic_ns() // 1_000_000
 
-
-FILE_OUTPUT = "out/" + str(input("Please enter a name for your ducky script: ").replace(".", "").lower()) + ".txt"
+OUTPUT_DIRECTORY = Path("out")
+OUTPUT_PATH = OUTPUT_DIRECTORY / Path(str(input("Please enter a name for your ducky script: ").replace(".", "").lower()) + ".txt")
 
 def on_press(key):
     if key is Key.esc:
@@ -44,7 +45,8 @@ def calculate_delay():
     return f"DELAY {delta}"
 
 def write_file(string):
-    with open(FILE_OUTPUT, "a") as f:
+    OUTPUT_DIRECTORY.mkdir(parents=True, exist_ok=True)
+    with open(OUTPUT_PATH, "a") as f:
         f.write(f"{string}\n")
 
 def format_key(key):
